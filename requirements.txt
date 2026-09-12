@@ -1,0 +1,6 @@
+langchain
+faiss-cpu
+torch
+pytest
+ruff
+python-dotenv
