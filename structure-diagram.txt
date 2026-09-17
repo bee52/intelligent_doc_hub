@@ -1,0 +1,23 @@
+intelligent_doc_hub/
+├── data/
+│   ├── raw_documents/
+│   └── processed_graphs/
+├── src/
+│   ├── core/
+│   │   ├── config.py
+│   │   └── llm_client.py
+│   ├── ingestion/
+│   │   ├── chunker.py
+│   │   └── graph_extractor.py
+│   ├── retrieval/
+│   │   ├── standard_rag.py
+│   │   ├── agentic_rag.py
+│   │   └── graph_rag.py
+│   └── tools/
+│       ├── web_search.py
+│       └── db_queries.py
+├── tests/
+│   ├── test_retrieval.py
+│   └── test_agents.py
+├── requirements.txt
+└── main_app.py
