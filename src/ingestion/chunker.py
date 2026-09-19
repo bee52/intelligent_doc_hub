@@ -12,7 +12,6 @@ from typing import Self
 
 import pypdf
 from langchain_core.documents import Document
-from langchain_core.embeddings import Embeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)
@@ -57,22 +56,6 @@ def load_and_chunk_documents(
 		"Processed %d pages into %d chunks", len(documents), len(chunked_documents)
 	)
 	return chunked_documents
-
-
-def embed_chunks(
-	chunks: Sequence[Document], embedding_model: Embeddings
-) -> list[list[float]]:
-	"""Embed chunk contents and return vectors in the same order as *chunks*."""
-	texts = [document.page_content for document in chunks]
-	if not texts:
-		return []
-
-	embeddings = embedding_model.embed_documents(texts)
-	if len(embeddings) != len(chunks):
-		raise ValueError("embedding model returned a different number of vectors")
-
-	logger.info("Embedded %d chunks", len(embeddings))
-	return embeddings
 
 
 @dataclass(frozen=True)
