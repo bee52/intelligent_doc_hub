@@ -3,7 +3,6 @@ langchain-core
 langchain-text-splitters
 pypdf
 faiss-cpu
-streamlit
 torch
 pytest
 ruff

@@ -140,6 +140,19 @@ Completion gate:
 - The agent cannot loop indefinitely.
 - Tests run entirely with deterministic fake tools and a fake generator.
 
+#### Agentic RAG Implementation Checklist
+
+- [x] Add a vector-store retrieval tool implementing the existing `RetrievalTool` protocol.
+- [x] Add tool input validation for empty queries and invalid result limits.
+- [x] Preserve source metadata and identify the tool on every retrieval result.
+- [ ] Add a concrete planner facade that can be backed by a model or deterministic rules.
+- [ ] Add a concrete evaluator facade that can accept evidence or return one follow-up plan.
+- [ ] Add optional web-search and database tools behind the same protocol.
+- [ ] Add an Agentic RAG application entry point that reuses the configured Basic RAG index.
+- [ ] Add a UI mode for displaying plans, rounds, tools, answer, and sources.
+- [ ] Add tests for direct retrieval, tool routing, follow-up retrieval, missing tools, and round limits.
+- [ ] Run the full test suite and Ruff after each completed slice.
+
 ### Phase 3: Graph RAG
 
 Owner modules:

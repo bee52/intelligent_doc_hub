@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import streamlit as st
 
-from main_app import build_default_embedding_model, build_default_generator, run_basic_rag_query
+from main_app import (
+    build_default_embedding_model,
+    build_default_generator,
+    run_basic_rag_query,
+)
 from src.core.config import Settings
 
 

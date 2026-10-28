@@ -1,4 +1,7 @@
+import pytest
+from langchain_community.vectorstores import FAISS
 from langchain_core.documents import Document
+from langchain_core.embeddings import Embeddings
 
 from src.retrieval.agentic_rag import (
 	EvaluationResult,
@@ -6,6 +9,7 @@ from src.retrieval.agentic_rag import (
 	RetrievalResult,
 	run_agentic_rag,
 )
+from src.tools.vector_search import VectorStoreTool
 
 
 class FakeTool:
@@ -76,3 +80,37 @@ def test_agent_respects_round_limit() -> None:
 	)
 
 	assert response.rounds == 1
+
+
+def test_vector_store_tool_returns_documents_and_validates_queries() -> None:
+	class FakeEmbeddings(Embeddings):
+		def embed_documents(self, texts: list[str]) -> list[list[float]]:
+			return [[float(len(text))] for text in texts]
+
+		def embed_query(self, text: str) -> list[float]:
+			return [float(len(text))]
+
+	store = FAISS.from_documents(
+		[Document(page_content="agentic evidence", metadata={"source": "fixture"})],
+		FakeEmbeddings(),
+	)
+	tool = VectorStoreTool(store, default_k=1)
+
+	results = tool.search("agentic")
+
+	assert tool.name == "vector"
+	assert results[0].metadata["source"] == "fixture"
+
+	with pytest.raises(ValueError, match="query must not be empty"):
+		tool.search(" ")
+
+	with pytest.raises(ValueError, match="default_k must be greater than zero"):
+		VectorStoreTool(store, default_k=0)
+
+
+def test_retrieval_result_records_tool_and_preserves_document_metadata() -> None:
+	document = Document(page_content="evidence", metadata={"source": "fixture", "page": 2})
+	result = RetrievalResult(documents=[document], tool="vector")
+
+	assert result.tool == "vector"
+	assert result.documents[0].metadata == {"source": "fixture", "page": 2}

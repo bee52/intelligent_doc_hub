@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
 
 from src.core.config import Settings
 from src.core.llm_client import CallableEmbeddings, CallableGenerator
